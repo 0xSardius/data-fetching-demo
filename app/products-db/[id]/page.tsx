@@ -1,16 +1,17 @@
 "use client";
 
-import { Submit } from "../components/submit";
+import { Submit } from "../../components/submit";
 import { useActionState } from "react";
-import { FormState } from "../actions/products";
-import { createProduct } from "../actions/products";
+import { FormState, updateProduct } from "../../actions/products";
 
 
-export default function AddProductPage() {
+export default function EditProductPage({params}: {params: Promise<{id: string}>}) {
   const initialState: FormState = { errors: {} };
 
 
-  const [formState, formAction, isPending] = useActionState(createProduct, initialState);
+  const [formState, formAction, isPending] = useActionState(updateProduct, initialState);
+  const id = (await params).id;
+  const product = await getProduct(parseInt(id));
   return (
     <div style={{ padding: 32 }}>
       <h1>Create Product</h1>
