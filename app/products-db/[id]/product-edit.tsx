@@ -4,15 +4,20 @@ import { Submit } from "../../components/submit";
 import { useActionState } from "react";
 import { FormState, updateProduct } from "../../actions/products";
 
+type Product = {
+  id: number;
+  title: string;
+  price: number;
+  description: string | null;
+}
 
-export default function EditProductForm() {
+export default function EditProductForm({ product }: { product: Product }) {
   const initialState: FormState = { errors: {} };
-
-
+  const [formState, formAction, isPending] = useActionState(updateProduct, initialState);
 
   return (
     <div style={{ padding: 32 }}>
-      <h1>Create Product</h1>
+      <h1>Edit Product</h1>
       <form action={formAction} style={{ 
         maxWidth: 400, 
         margin: "0 auto", 
@@ -21,12 +26,14 @@ export default function EditProductForm() {
         borderRadius: "8px",
         color: "white"
       }}>
+        <input type="hidden" name="id" value={product.id} />
         <div style={{ marginBottom: 12 }}>
           <label>
             Title:
             <input
               type="text"
               name="title"
+              defaultValue={product.title}
               style={{ 
                 width: "100%", 
                 padding: 8, 
@@ -49,6 +56,7 @@ export default function EditProductForm() {
             <input
               type="number"
               name="price"
+              defaultValue={product.price}
               style={{ 
                 width: "100%", 
                 padding: 8, 
@@ -72,6 +80,7 @@ export default function EditProductForm() {
             Description:
             <textarea
               name="description"
+              defaultValue={product.description || ""}
               style={{ 
                 width: "100%", 
                 padding: 8, 
