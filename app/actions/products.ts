@@ -1,6 +1,6 @@
 "use server";
 
-import { addProduct, updateProduct as updateProductDb } from "../prisma-db";
+import { addProduct, updateProduct as updateProductDb, deleteProduct } from "../prisma-db";
 import { redirect } from "next/navigation";
 
 export type Errors = {
@@ -77,5 +77,12 @@ export async function updateProduct(prevState: FormState, formData: FormData) {
     redirect("/products-db");
   } catch (error) {
     throw new Error("Failed to update product");
+  }
+
+  export async function removeProduct(id: number) {
+    "use server";
+    await deleteProduct(id);
+    redirect("/products-db"); 
+
   }
 }
